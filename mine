@@ -1,0 +1,27 @@
+const int sensorPin = A0;    // Pin sensor MQ-2
+const int buzzerPin = 3;     // Pin buzzer
+const int ledPin = 4;        // Pin LED
+int sensorValue = 0;         // Variabel baca sensor
+
+void setup() {
+  pinMode(buzzerPin, OUTPUT);
+  pinMode(ledPin, OUTPUT);
+  Serial.begin(9600);
+}
+
+void loop() {
+  sensorValue = analogRead(sensorPin);  // Baca nilai sensor (0-1023)
+  Serial.print("Nilai Sensor: ");
+  Serial.println(sensorValue);
+
+  // Jika nilai sensor > threshold (contoh: 300 = ada asap)
+  if (sensorValue > 300) {
+    digitalWrite(ledPin, HIGH);  // LED nyala
+    tone(buzzerPin, 1000);       // Buzzer bunyi (frekuensi 1kHz)
+    Serial.println("WARNING! Asap terdeteksi!");
+  } else {
+    digitalWrite(ledPin, LOW);   // LED mati
+    noTone(buzzerPin);           // Buzzer diam
+  }
+  delay(500);  // Delay untuk stabilisasi
+}
